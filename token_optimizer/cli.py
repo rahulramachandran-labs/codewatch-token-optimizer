@@ -4,6 +4,7 @@ Commands:
   token-optimizer watch [--mode format|skeleton]        watch src_code_base/ and auto-prune
   token-optimizer sync  [--mode format|skeleton]        one-shot sync
   token-optimizer prune <file> [--mode format|skeleton] prune a single file to stdout
+  token-optimizer rules                                 generate LLM rule files only
 
 Modes:
   format    Strip docstrings, type hints, comments. Keeps all logic intact. (default)
@@ -11,7 +12,7 @@ Modes:
             Ideal for architectural overviews — 40-95% token savings on large codebases.
 
 The watcher always keeps codebase_map.md up to date with each file's exports
-and purpose, regardless of mode.
+and purpose, regardless of mode. Rule files are regenerated on every watch start.
 """
 
 import sys
@@ -63,6 +64,13 @@ def cmd_prune(path_str: str, mode: str) -> None:
     )
 
 
+def cmd_rules() -> None:
+    from . import rules_generator
+    print("Generating LLM rule files...")
+    rules_generator.generate()
+    print("Done.")
+
+
 def main() -> None:
     args = sys.argv[1:]
     if not args or args[0] in ("-h", "--help"):
@@ -84,6 +92,8 @@ def main() -> None:
             print("Usage: token-optimizer prune <file> [--mode format|skeleton]")
             sys.exit(1)
         cmd_prune(rest2[0], mode)
+    elif cmd == "rules":
+        cmd_rules()
     else:
         print(f"Unknown command: {cmd}\n{__doc__}")
         sys.exit(1)

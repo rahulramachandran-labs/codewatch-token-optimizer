@@ -11,6 +11,7 @@ from watchdog.observers import Observer
 
 from .pruner import prune_file
 from . import history_manager as hm
+from . import rules_generator
 
 SKIP_DIRS = {"__pycache__", ".git", "node_modules", ".venv", "venv", ".mypy_cache"}
 
@@ -104,6 +105,8 @@ def watch(mode: str = "format") -> None:
     src_root, out_root = _paths()
     src_root.mkdir(exist_ok=True)
     out_root.mkdir(exist_ok=True)
+    print("Generating LLM rule files...")
+    rules_generator.generate()
     initial_sync(mode)
     observer = Observer()
     observer.schedule(_Handler(mode, src_root, out_root), str(src_root), recursive=True)
