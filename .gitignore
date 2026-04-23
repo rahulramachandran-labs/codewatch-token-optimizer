@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+*.egg-info/
+.env
+src_code_base/
+src_code_base_pruned/
+codebase_map.md

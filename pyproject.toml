@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "codewatch-token-optimizer"
+version = "0.1.0"
+description = "Watch and prune source code to reduce AI context tokens"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "tiktoken",
+    "sqlglot",
+    "watchdog",
+]
+
+[project.scripts]
+token-optimizer = "token_optimizer.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["token_optimizer*"]
